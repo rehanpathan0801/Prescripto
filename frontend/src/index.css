@@ -2,6 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
+
 body {
   min-height: 100vh;
   margin: 0;
@@ -130,4 +131,23 @@ h1, h2, h3, h4, h5, h6 {
 }
 body, .card, .container, .navbar, .form-control, .btn, .nav-tabs .nav-link {
   transition: background 0.3s, color 0.3s, box-shadow 0.3s;
+}
+
+/* 🌟 Custom animation for feedback messages */
+@keyframes fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(5px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in {
+  animation: fade-in 0.4s ease-out;
+}
+html {
+  transition: background-color 0.3s ease, color 0.3s ease;
 }

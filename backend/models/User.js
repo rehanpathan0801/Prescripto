@@ -7,7 +7,7 @@ const userSchema = new mongoose.Schema({
     // Speciality and fees are only required for doctors
   speciality: { type: String, required: function() { return this.role === 'doctor'; } },
   fees: { type: Number, required: function() { return this.role === 'doctor'; } }, 
-  role: { type: String, enum: ['patient', 'doctor', 'admin'], required: true }
+  role: { type: String, enum: ['patient', 'doctor', 'admin','lab'], required: true }
 }, { timestamps: true });
 
 

@@ -428,36 +428,69 @@ const openPrescriptionModal = (appId) => {
 
       {/* ✅ View Prescription Modal */}
 <Dialog open={showViewPrescriptionModal && selectedPrescription} onOpenChange={() => setShowViewPrescriptionModal(false)}>
-  <DialogContent className="max-w-lg">
+  <DialogContent
+    className="max-w-lg bg-white dark:bg-gray-900 rounded-xl shadow-2xl border border-gray-200 dark:border-gray-700 p-6 backdrop-blur-lg"
+  >
     <DialogHeader>
-      <DialogTitle className="text-lg font-semibold">Prescription Details</DialogTitle>
+      <DialogTitle className="text-xl font-bold text-sky-600 dark:text-sky-400">
+        Prescription Details
+      </DialogTitle>
     </DialogHeader>
 
-    <div className="space-y-4">
+    <div className="space-y-5 mt-2">
+      {/* Medicines List */}
       <div>
-        <h4 className="font-medium mb-2">Medicines</h4>
-        <ul className="space-y-1">
+        <h4 className="text-md font-semibold text-gray-700 dark:text-gray-300 mb-2">
+          Medicines
+        </h4>
+        <ul className="space-y-3">
           {selectedPrescription?.medicines?.map((med, idx) => (
-            <li key={idx} className="text-sm">
-              <span className="font-semibold">{med.name}</span> — {med.dosage}
-              {med.instructions && <span className="text-gray-500"> ({med.instructions})</span>}
+            <li
+              key={idx}
+              className="bg-sky-50 dark:bg-gray-800 border border-sky-100 dark:border-gray-700 rounded-lg px-4 py-3 flex flex-col shadow-sm"
+            >
+              <span className="font-semibold text-gray-900 dark:text-white">
+                {med.name}
+              </span>
+              <span className="text-sm text-gray-700 dark:text-gray-400">
+                {med.dosage}
+                {med.instructions && (
+                  <span className="text-gray-500 dark:text-gray-400">
+                    {" "}
+                    • {med.instructions}
+                  </span>
+                )}
+              </span>
             </li>
           ))}
         </ul>
       </div>
 
+      {/* Notes (if any) */}
       {selectedPrescription?.notes && (
-        <div className="text-sm bg-gray-50 p-2 rounded border border-gray-200">
-          <span className="font-semibold">Notes:</span> {selectedPrescription.notes}
+        <div className="bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg p-4 shadow-sm">
+          <span className="font-semibold text-gray-700 dark:text-gray-300 block mb-1">
+            Notes:
+          </span>
+          <p className="text-sm text-gray-600 dark:text-gray-400">
+            {selectedPrescription.notes}
+          </p>
         </div>
       )}
     </div>
 
-    <DialogFooter>
-      <Button variant="outline" onClick={() => setShowViewPrescriptionModal(false)}>Close</Button>
+    <DialogFooter className="mt-6">
+      <Button
+        variant="outline"
+        onClick={() => setShowViewPrescriptionModal(false)}
+        className="border-sky-400 dark:border-sky-600 text-sky-600 dark:text-sky-400 hover:bg-sky-50 dark:hover:bg-gray-800 rounded-lg"
+      >
+        Close
+      </Button>
     </DialogFooter>
   </DialogContent>
 </Dialog>
+
 
 
 {/* ✅ Add Prescription Modal */}
@@ -479,17 +512,35 @@ const openPrescriptionModal = (appId) => {
             onChange={(e) => handleMedicineChange(idx, "name", e.target.value)}
             required
           />
-          <Input
-            placeholder="Dosage"
-            value={med.dosage}
-            onChange={(e) => handleMedicineChange(idx, "dosage", e.target.value)}
-            required
-          />
-          <Input
-            placeholder="Instructions"
-            value={med.instructions}
-            onChange={(e) => handleMedicineChange(idx, "instructions", e.target.value)}
-          />
+          {/* Dosage Dropdown */}
+<select
+  className="w-full rounded-md border px-3 py-2 bg-white dark:bg-gray-800"
+  value={med.dosage}
+  onChange={(e) => handleMedicineChange(idx, "dosage", e.target.value)}
+  required
+>
+  <option value="">Select Dosage</option>
+  {["Once a day", "Twice a day", "Thrice a day"].map((d) => (
+    <option key={d} value={d}>
+      {d}
+    </option>
+  ))}
+</select>
+
+{/* Instructions Dropdown */}
+<select
+  className="w-full rounded-md border px-3 py-2 bg-white dark:bg-gray-800"
+  value={med.instructions}
+  onChange={(e) => handleMedicineChange(idx, "instructions", e.target.value)}
+>
+  <option value="">Select Instruction</option>
+  {["After meal", "Before meal", "At bedtime", "On an empty stomach"].map((i) => (
+    <option key={i} value={i}>
+      {i}
+    </option>
+  ))}
+</select>
+
         </div>
       ))}
 

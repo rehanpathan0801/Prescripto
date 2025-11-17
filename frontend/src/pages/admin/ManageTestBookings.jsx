@@ -24,6 +24,7 @@ import {
 
 export default function ManageTestBookings() {
   const { token } = useContext(AuthContext);
+  const { user } = useContext(AuthContext);
   const { addToast } = useContext(ToastContext);
   const [bookings, setBookings] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -117,7 +118,7 @@ export default function ManageTestBookings() {
         {/* Back Button */}
       <div className="mb-6">
         <button
-          onClick={() => navigate('/admin')}
+          onClick={() => navigate(user?.role === 'lab' ? '/lab' : '/admin')}
           className="flex items-center gap-2 text-gray-700 hover:text-primary transition-colors bg-gray-100 hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700 px-3 py-2 rounded-full shadow-sm"
         >
           <ArrowLeft className="w-5 h-5" />
@@ -176,7 +177,9 @@ export default function ManageTestBookings() {
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-100">
-              {filtered.map((b) => (
+              {filtered
+                .sort((a, b) => new Date(b.date) - new Date(a.date)) // descending order
+                .map((b) => (
                 <tr key={b._id} className="hover:bg-gray-50 transition">
                   <td className="px-4 py-3">
                     <div className="font-medium">{b.patientId?.name}</div>

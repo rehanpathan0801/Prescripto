@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+/*const mongoose = require('mongoose');
 
 const testSchema = new mongoose.Schema({
   patient: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
@@ -10,3 +10,4 @@ const testSchema = new mongoose.Schema({
 }, { timestamps: true });
 
 module.exports = mongoose.model('Test', testSchema); 
+*/

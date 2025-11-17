@@ -12,16 +12,26 @@ const router = express.Router();
 // Add Doctor
 router.post('/doctor', auth, role('admin'), async (req, res) => {
   try {
-    const { name, email, password } = req.body;
-    if (!name || !email || !password) return res.status(400).json({ message: 'All fields required' });
+    const { name, email, password, speciality, fees } = req.body;
+    if (!speciality) return res.status(400).json({ message: 'Speciality is required' });
+    if (!fees || isNaN(Number(fees))) return res.status(400).json({ message: 'Fees must be a number' });
+
     const existing = await User.findOne({ email });
     if (existing) return res.status(400).json({ message: 'Email already registered' });
+
     const hashed = await bcrypt.hash(password, 10);
-    const user = new User({ name, email, password: hashed, role: 'doctor' });
-    await user.save();
-    res.status(201).json({ message: 'Doctor added' });
+    const doctor = new User({
+      name,
+      email,
+      password: hashed,
+      speciality,
+      fees: Number(fees),
+      role: 'doctor'
+    });
+    await doctor.save();
+    res.status(201).json({ message: 'Doctor created' });
   } catch (err) {
-    res.status(500).json({ message: 'Server error' });
+    res.status(500).json({ message: err.message || 'Failed to create doctor' });
   }
 });
 

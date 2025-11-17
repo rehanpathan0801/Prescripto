@@ -40,16 +40,16 @@ export default function BookTest() {
   };
 
   const handleBooked = () => {
-    // optional: show toast or refresh list
+    // Optional: show toast or refresh list
   };
 
   return (
-    <div className="container mx-auto px-4 py-8">
+    <div className="container mx-auto px-4 py-8 bg-white dark:bg-gray-900 transition-colors duration-300">
       {/* Back Button */}
       <div className="mb-6">
         <button
           onClick={() => navigate('/patient')}
-          className="flex items-center gap-2 text-gray-700 hover:text-primary transition-colors bg-gray-100 hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700 px-3 py-2 rounded-full shadow-sm"
+          className="flex items-center gap-2 text-gray-700 dark:text-gray-300 bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 px-3 py-2 rounded-full shadow-sm transition-all"
         >
           <ArrowLeft className="w-5 h-5" />
           <span className="hidden sm:inline text-sm font-medium">Back to Dashboard</span>
@@ -61,7 +61,7 @@ export default function BookTest() {
         <h2 className="text-3xl font-bold text-gray-900 dark:text-white tracking-tight">
           🧪 Available Medical Tests
         </h2>
-        <p className="text-gray-500 dark:text-gray-400">
+        <p className="text-gray-600 dark:text-gray-400">
           Browse available diagnostic tests and book instantly.
         </p>
       </div>
@@ -76,7 +76,7 @@ export default function BookTest() {
 
       {/* Error State */}
       {error && (
-        <div className="flex items-center justify-center text-red-600 bg-red-50 border border-red-300 rounded-lg p-4">
+        <div className="flex items-center justify-center text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-900/20 border border-red-300 dark:border-red-800 rounded-lg p-4">
           <AlertCircle className="w-5 h-5 mr-2" /> {error}
         </div>
       )}
@@ -84,30 +84,33 @@ export default function BookTest() {
       {/* Empty State */}
       {!loading && !error && tests.length === 0 && (
         <div className="flex flex-col items-center justify-center h-64 text-gray-500 dark:text-gray-400">
-          <FlaskConical className="w-10 h-10 mb-2" />
+          <FlaskConical className="w-10 h-10 mb-2 text-gray-500 dark:text-gray-400" />
           <p>No tests found at the moment.</p>
         </div>
       )}
 
       {/* Test Cards Grid */}
-      <motion.div
-        layout
-        className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-6"
-      >
-        {tests.map((t, i) => (
-          <motion.div
-            key={t._id || i}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: i * 0.05 }}
-          >
-            <TestCard
-              test={t}
-              onBook={(test) => setSelectedTest(test)}
-            />
-          </motion.div>
-        ))}
-      </motion.div>
+      {!loading && !error && tests.length > 0 && (
+        <motion.div
+          layout
+          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-6"
+        >
+          {tests.map((t, i) => (
+            <motion.div
+              key={t._id || i}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: i * 0.05 }}
+            >
+              <TestCard
+                test={t}
+                onBook={(test) => setSelectedTest(test)}
+                className="bg-white dark:bg-gray-800 dark:border-gray-700"
+              />
+            </motion.div>
+          ))}
+        </motion.div>
+      )}
 
       {/* Booking Modal */}
       {selectedTest && (

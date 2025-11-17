@@ -203,10 +203,11 @@ export default function PatientDashboard() {
 
   // ---------- Render ----------
   return (
-    <div className="max-w-6xl mx-auto p-6">
+<div className="max-w-6xl mx-auto p-6 text-gray-900 dark:text-gray-100">
       {/* Header */}
       <div className="flex items-center gap-3 mb-6">
-        <div className="p-3 rounded-lg bg-sky-50 dark:bg-sky-900 text-sky-600 dark:text-sky-300 shadow-sm">
+        <div className="p-3 rounded-lg bg-sky-100 dark:bg-sky-900 text-sky-600 dark:text-sky-300 shadow-sm">
+
           <Hospital className="w-6 h-6" />
         </div>
         <div>
@@ -215,7 +216,8 @@ export default function PatientDashboard() {
         </div>
       </div>
 
-      <Card className="overflow-visible">
+      <Card className="overflow-visible border border-gray-200 dark:border-gray-800 shadow-lg bg-white/80 dark:bg-gray-900/80 backdrop-blur-md transition-all">
+
         <CardHeader className="px-6 pt-6 pb-0">
           <CardTitle className="flex items-center gap-3">
             <span className="text-lg font-semibold">Dashboard</span>
@@ -227,16 +229,17 @@ export default function PatientDashboard() {
           <Tabs value={tab} onValueChange={setTab}>
             <div className="mb-4">
               <TabsList className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3 bg-sky-50 dark:bg-gray-800 rounded-xl p-1 h-14 shadow-sm">
+
                 <TabsTrigger
                   value="appointments"
-                  className="data-[state=active]:bg-sky-600 data-[state=active]:text-white rounded-lg flex items-center justify-center gap-2 py-2.5 font-medium transition-all hover:bg-sky-100"
+                  className="data-[state=active]:bg-sky-600 data-[state=active]:text-white rounded-lg flex items-center justify-center gap-2 py-2.5 font-medium transition-all hover:bg-sky-100 dark:hover:bg-gray-700"
                 >
                  Appointments
                 </TabsTrigger>
 
                 <TabsTrigger
                   value="book"
-                  className="data-[state=active]:bg-sky-600 data-[state=active]:text-white rounded-lg flex items-center justify-center gap-2 py-2.5 font-medium transition-all hover:bg-sky-100"
+                  className="data-[state=active]:bg-sky-600 data-[state=active]:text-white rounded-lg flex items-center justify-center gap-2 py-2.5 font-medium transition-all hover:bg-sky-100 dark:hover:bg-gray-700"
                 >
                    Book Appointment
                 </TabsTrigger>
@@ -246,7 +249,7 @@ export default function PatientDashboard() {
                 <TabsTrigger
                   value="book-test"
                   onClick={() => navigate("/book-test")}
-                  className="data-[state=active]:bg-sky-600 data-[state=active]:text-white rounded-lg flex items-center justify-center gap-2 py-2.5 font-medium transition-all hover:bg-sky-100"
+                  className="data-[state=active]:bg-sky-600 data-[state=active]:text-white rounded-lg flex items-center justify-center gap-2 py-2.5 font-medium transition-all hover:bg-sky-100  dark:hover:bg-gray-700"
                 >
                  Book Test
                 </TabsTrigger>
@@ -254,14 +257,14 @@ export default function PatientDashboard() {
                 <TabsTrigger
                   value="my-tests"
                   onClick={() => navigate("/my-tests")}
-                  className="data-[state=active]:bg-sky-600 data-[state=active]:text-white rounded-lg flex items-center justify-center gap-2 py-2.5 font-medium transition-all hover:bg-sky-100"
+                  className="data-[state=active]:bg-sky-600 data-[state=active]:text-white rounded-lg flex items-center justify-center gap-2 py-2.5 font-medium transition-all hover:bg-sky-100 dark:hover:bg-gray-700"
                 >
                    My Tests
                 </TabsTrigger>
                  <TabsTrigger
                  
                   value="feedback"
-                  className="data-[state=active]:bg-sky-600 data-[state=active]:text-white rounded-lg flex items-center justify-center gap-2 py-2.5 font-medium transition-all hover:bg-sky-100"
+                  className="data-[state=active]:bg-sky-600 data-[state=active]:text-white rounded-lg flex items-center justify-center gap-2 py-2.5 font-medium transition-all hover:bg-sky-100 dark:hover:bg-gray-700"
                 >
                   Feedback
                   
@@ -286,7 +289,8 @@ export default function PatientDashboard() {
                 ) : (
                   <div className="overflow-x-auto">
                     <table className="w-full text-sm border-collapse">
-                      <thead className="bg-gray-50">
+                      <thead className="bg-gray-100 dark:bg-gray-800">
+
                         <tr>
                           <th className="p-3 text-left">Date</th>
                           <th className="p-3 text-left">Time</th>
@@ -299,7 +303,7 @@ export default function PatientDashboard() {
                       </thead>
                       <tbody>
                         {appointments.map((app) => (
-                          <tr key={app._id} className="border-t hover:bg-gray-50">
+                          <tr key={app._id} className="border-t border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-800">
                             <td className="p-3">{new Date(app.date).toLocaleDateString()}</td>
                             <td className="p-3">{app.time}</td>
                             <td className="p-3">
@@ -310,15 +314,19 @@ export default function PatientDashboard() {
                               {app.gender ? String(app.gender).charAt(0).toUpperCase() + String(app.gender).slice(1) : '-'}
                             </td>
                             <td className="p-3">
-                              <Badge variant="outline" className={
-                                app.status === 'completed'
-                                  ? 'bg-green-50 text-green-700'
-                                  : app.status === 'cancelled'
-                                  ? 'bg-red-50 text-red-700'
-                                  : 'bg-yellow-50 text-yellow-700'
-                              }>
-                                {app.status}
-                              </Badge>
+                              <Badge
+  variant="outline"
+  className={`capitalize ${
+    app.status === 'completed'
+      ? 'bg-green-100 dark:bg-green-900/40 text-green-700 dark:text-green-300'
+      : app.status === 'cancelled'
+      ? 'bg-red-100 dark:bg-red-900/40 text-red-700 dark:text-red-300'
+      : 'bg-yellow-100 dark:bg-yellow-900/40 text-yellow-700 dark:text-yellow-300'
+  }`}
+>
+  {app.status}
+</Badge>
+
                             </td>
                             <td className="p-3">
                              {app.prescription ? (
@@ -489,45 +497,96 @@ export default function PatientDashboard() {
 
             {/* ---------- Feedback Tab ---------- */}
             <TabsContent value="feedback">
-              <div className="max-w-xl mx-auto space-y-4">
-                <h3 className="text-lg font-semibold">Submit Feedback</h3>
-                <form onSubmit={handleFeedback} className="space-y-3">
-                  <div>
-                    <label className="block text-sm font-medium mb-1">Message</label>
-                    <Textarea value={feedbackMessage} onChange={(e) => setFeedbackMessage(e.target.value)} required />
-                  </div>
+  <div className="max-w-xl mx-auto mt-4 bg-white/70 dark:bg-gray-900/70 backdrop-blur-lg border border-gray-200 dark:border-gray-700 rounded-2xl shadow-xl p-6 space-y-6 transition-all duration-300">
+    <h3 className="text-2xl font-extrabold text-center bg-gradient-to-r from-sky-600 to-blue-600 bg-clip-text text-transparent tracking-wide">
+      Share Your Feedback 💬
+    </h3>
 
-                  <div>
-                    <label className="block text-sm font-medium mb-1">Rating</label>
-                    <select
-                      value={feedbackRating}
-                      onChange={(e) => setFeedbackRating(e.target.value)}
-                      className="w-full rounded-md border px-3 py-2 bg-white dark:bg-gray-800"
-                      required
-                    >
-                      <option value="">Select Rating</option>
-                      {[1, 2, 3, 4, 5].map((r) => (
-                        <option key={r} value={r}>
-                          {r}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
+    <p className="text-center text-gray-500 dark:text-gray-400 text-sm">
+      We value your thoughts — help us improve your experience at <b>Prescripto</b>.
+    </p>
 
-                  {feedbackError && <div className="text-red-600">{feedbackError}</div>}
-                  {feedbackSuccess && <div className="text-green-600">{feedbackSuccess}</div>}
+    <form onSubmit={handleFeedback} className="space-y-5">
+      {/* Feedback Message */}
+      <div>
+        <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
+          Your Message
+        </label>
+        <Textarea
+          value={feedbackMessage}
+          onChange={(e) => setFeedbackMessage(e.target.value)}
+          placeholder="Write your feedback..."
+          required
+          className="w-full min-h-[120px] resize-none rounded-xl border border-gray-300 dark:border-gray-700 focus:ring-2 focus:ring-sky-400 dark:focus:ring-sky-600 focus:border-transparent bg-white dark:bg-gray-800 transition-all duration-300 shadow-sm"
+        />
+      </div>
 
-                  <div className="flex gap-3">
-                    <Button type="submit" className="bg-emerald-600 hover:bg-emerald-700 text-white" disabled={feedbackLoading}>
-                      {feedbackLoading ? 'Submitting...' : 'Submit Feedback'}
-                    </Button>
-                    <Button variant="outline" onClick={() => { setFeedbackMessage(''); setFeedbackRating(''); }}>
-                      Clear
-                    </Button>
-                  </div>
-                </form>
-              </div>
-            </TabsContent>
+      {/* Rating */}
+      <div>
+        <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
+          Rating
+        </label>
+        <select
+          value={feedbackRating}
+          onChange={(e) => setFeedbackRating(e.target.value)}
+          required
+          className="w-full rounded-xl border border-gray-300 dark:border-gray-700 bg-gradient-to-r from-white to-sky-50 dark:from-gray-800 dark:to-gray-900 px-3 py-2 focus:ring-2 focus:ring-sky-400 dark:focus:ring-sky-600 shadow-sm text-gray-700 dark:text-gray-200 transition-all duration-300"
+        >
+          <option value="">Select Rating</option>
+          {[1, 2, 3, 4, 5].map((r) => (
+            <option key={r} value={r}>
+              ⭐ {r}
+            </option>
+          ))}
+        </select>
+      </div>
+
+      {/* Alerts */}
+      {feedbackError && (
+        <div className="bg-red-50 dark:bg-red-900/30 border border-red-200 dark:border-red-800 text-red-600 dark:text-red-400 px-4 py-2 rounded-lg shadow-sm text-sm text-center animate-fade-in">
+          {feedbackError}
+        </div>
+      )}
+      {feedbackSuccess && (
+        <div className="bg-green-50 dark:bg-emerald-900/30 border border-green-200 dark:border-emerald-800 text-green-600 dark:text-emerald-400 px-4 py-2 rounded-lg shadow-sm text-sm text-center animate-fade-in">
+          {feedbackSuccess}
+        </div>
+      )}
+
+      {/* Buttons */}
+      <div className="flex justify-center gap-4">
+        <Button
+          type="submit"
+          className="bg-gradient-to-r from-emerald-500 to-green-600 hover:from-emerald-600 hover:to-green-700 text-white font-medium px-6 py-2 rounded-lg shadow-md hover:shadow-lg transition-all duration-300 disabled:opacity-50"
+          disabled={feedbackLoading}
+        >
+          {feedbackLoading ? (
+            <span className="flex items-center gap-2">
+              <i className="bi bi-arrow-repeat animate-spin"></i> Submitting...
+            </span>
+          ) : (
+            <span className="flex items-center gap-2">
+              <i className="bi bi-send-fill"></i> Submit Feedback
+            </span>
+          )}
+        </Button>
+
+        <Button
+          type="button"
+          variant="outline"
+          onClick={() => {
+            setFeedbackMessage("");
+            setFeedbackRating("");
+          }}
+          className="border-gray-300 dark:border-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg shadow-sm transition-all"
+        >
+          <i className="bi bi-x-circle me-1"></i> Clear
+        </Button>
+      </div>
+    </form>
+  </div>
+</TabsContent>
+
           </Tabs>
         </CardContent>
       </Card>

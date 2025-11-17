@@ -13,6 +13,7 @@ import { ArrowLeft } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 export default function ManageTests() {
   const { token } = useContext(AuthContext);
+  const { user } = useContext(AuthContext);
   const { addToast } = useContext(ToastContext);
   const [tests, setTests] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -85,7 +86,7 @@ export default function ManageTests() {
        {/* Back Button */}
       <div className="mb-6">
         <button
-          onClick={() => navigate('/admin')}
+          onClick={() => navigate(user?.role === 'lab' ? '/lab' : '/admin')}
           className="flex items-center gap-2 text-gray-700 hover:text-primary transition-colors bg-gray-100 hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700 px-3 py-2 rounded-full shadow-sm"
         >
           <ArrowLeft className="w-5 h-5" />
@@ -137,10 +138,11 @@ export default function ManageTests() {
                           <Pencil size={16} className="mr-1" /> Edit
                         </Button>
                         <Button
-                          size="sm"
-                          variant="destructive"
+                          variant="outline"
+                      size="sm"
+                      className="flex items-center text-red-600 border-red-300 hover:bg-red-50"
                           onClick={() => handleDelete(t._id)}
-                          className="flex items-center"
+                          
                         >
                           <Trash2 size={16} className="mr-1" /> Delete
                         </Button>
@@ -156,59 +158,104 @@ export default function ManageTests() {
 
       {/* Add/Edit Test Dialog */}
       <Dialog open={open} onOpenChange={setOpen}>
-        <DialogContent className="sm:max-w-lg">
-          <DialogHeader>
-            <DialogTitle>{editingId ? "Edit Test" : "Add New Test"}</DialogTitle>
-          </DialogHeader>
+  <DialogContent
+    className="sm:max-w-lg bg-white/80 dark:bg-gray-900/70 backdrop-blur-xl 
+               border border-gray-200 dark:border-gray-700 shadow-2xl 
+               rounded-2xl transition-all duration-300 animate-in fade-in-50 zoom-in-95"
+  >
+    <DialogHeader className="border-b border-gray-200 dark:border-gray-700 pb-3">
+      <DialogTitle className="text-xl font-bold bg-gradient-to-r from-sky-600 to-blue-500 bg-clip-text text-transparent">
+        {editingId ? "Edit Test" : "Add New Test"}
+      </DialogTitle>
+    </DialogHeader>
 
-          <form onSubmit={handleSubmit} className="space-y-4 mt-3">
-            <div>
-              <label className="text-sm font-medium">Test Name</label>
-              <Input
-                value={form.name}
-                onChange={(e) => setForm({ ...form, name: e.target.value })}
-                placeholder="Enter test name"
-                required
-              />
-            </div>
-            <div>
-              <label className="text-sm font-medium">Description</label>
-              <Textarea
-                value={form.description}
-                onChange={(e) => setForm({ ...form, description: e.target.value })}
-                placeholder="Enter test description"
-              />
-            </div>
-            <div className="grid grid-cols-2 gap-4">
-              <div>
-                <label className="text-sm font-medium">Price (₹)</label>
-                <Input
-                  type="number"
-                  value={form.price}
-                  onChange={(e) => setForm({ ...form, price: e.target.value })}
-                  placeholder="Enter price"
-                  required
-                />
-              </div>
-              <div>
-                <label className="text-sm font-medium">Report Time</label>
-                <Input
-                  value={form.reportTime}
-                  onChange={(e) => setForm({ ...form, reportTime: e.target.value })}
-                  placeholder="e.g. 24-48 hrs"
-                />
-              </div>
-            </div>
+    <form onSubmit={handleSubmit} className="space-y-4 mt-4">
+      {/* Test Name */}
+      <div>
+        <label className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1 block">
+          Test Name
+        </label>
+        <Input
+          value={form.name}
+          onChange={(e) => setForm({ ...form, name: e.target.value })}
+          placeholder="Enter test name"
+          required
+          className="bg-white/90 dark:bg-gray-800 border border-gray-300 dark:border-gray-700 
+                     rounded-lg focus:ring-2 focus:ring-sky-400 dark:focus:ring-sky-600 
+                     shadow-sm text-gray-800 dark:text-gray-100 transition-all"
+        />
+      </div>
 
-            <DialogFooter className="mt-6">
-              <Button variant="outline" onClick={() => setOpen(false)}>
-                Cancel
-              </Button>
-              <Button type="submit">{editingId ? "Update" : "Save"}</Button>
-            </DialogFooter>
-          </form>
-        </DialogContent>
-      </Dialog>
+      {/* Description */}
+      <div>
+        <label className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1 block">
+          Description
+        </label>
+        <Textarea
+          value={form.description}
+          onChange={(e) => setForm({ ...form, description: e.target.value })}
+          placeholder="Enter test description"
+          className="bg-white/90 dark:bg-gray-800 border border-gray-300 dark:border-gray-700 
+                     rounded-lg focus:ring-2 focus:ring-sky-400 dark:focus:ring-sky-600 
+                     shadow-sm text-gray-800 dark:text-gray-100 transition-all"
+        />
+      </div>
+
+      {/* Price + Report Time */}
+      <div className="grid grid-cols-2 gap-4">
+        <div>
+          <label className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1 block">
+            Price (₹)
+          </label>
+          <Input
+            type="number"
+            value={form.price}
+            onChange={(e) => setForm({ ...form, price: e.target.value })}
+            placeholder="Enter price"
+            required
+            className="bg-white/90 dark:bg-gray-800 border border-gray-300 dark:border-gray-700 
+                       rounded-lg focus:ring-2 focus:ring-sky-400 dark:focus:ring-sky-600 
+                       shadow-sm text-gray-800 dark:text-gray-100 transition-all"
+          />
+        </div>
+
+        <div>
+          <label className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1 block">
+            Report Time
+          </label>
+          <Input
+            value={form.reportTime}
+            onChange={(e) => setForm({ ...form, reportTime: e.target.value })}
+            placeholder="e.g. 24-48 hrs"
+            className="bg-white/90 dark:bg-gray-800 border border-gray-300 dark:border-gray-700 
+                       rounded-lg focus:ring-2 focus:ring-sky-400 dark:focus:ring-sky-600 
+                       shadow-sm text-gray-800 dark:text-gray-100 transition-all"
+          />
+        </div>
+      </div>
+
+      {/* Footer */}
+      <DialogFooter className="mt-6 flex justify-end gap-3">
+        <Button
+          variant="outline"
+          onClick={() => setOpen(false)}
+          className="border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 
+                     hover:bg-gray-100 dark:hover:bg-gray-800 transition-all rounded-lg"
+        >
+          Cancel
+        </Button>
+        <Button
+          type="submit"
+          className="bg-gradient-to-r from-sky-500 to-blue-600 hover:from-sky-600 hover:to-blue-700 
+                     text-white font-semibold shadow-md hover:shadow-lg transition-all rounded-lg"
+        >
+          {editingId ? "Update" : "Save"}
+        </Button>
+      </DialogFooter>
+    </form>
+  </DialogContent>
+</Dialog>
+
     </div>
   );
 }

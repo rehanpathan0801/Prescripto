@@ -38,6 +38,18 @@ export default function AdminDashboard() {
   const [tests, setTests] = useState([]);
   const [feedback, setFeedback] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [addSpeciality, setAddSpeciality] = useState('');
+  const [addFees, setAddFees] = useState('');
+  const [addError, setAddError] = useState(null);
+  const [addSuccess, setAddSuccess] = useState(null);
+  const SPECIALITIES = [
+  "General",
+  "Cardiologist",
+  "Pediatrician",
+  "Neurologist",
+  "Orthopedic",
+  "Dermatologist"
+];
 
   const [addRole, setAddRole] = useState("doctor");
   const [addName, setAddName] = useState("");
@@ -120,29 +132,46 @@ export default function AdminDashboard() {
     }
   };
 
-  const handleAddUser = async (e) => {
-    e.preventDefault();
-    setAddLoading(true);
-    try {
-      const url =
-        addRole === "doctor"
-          ? `${import.meta.env.VITE_API_URL}/admin/doctor`
-          : `${import.meta.env.VITE_API_URL}/admin/patient`;
-      await axios.post(
-        url,
-        { name: addName, email: addEmail, password: addPassword },
-        { headers: { Authorization: `Bearer ${token}` } }
-      );
-      addToast(`${addRole} added successfully!`, "success");
-      setAddName("");
-      setAddEmail("");
-      setAddPassword("");
-      addRole === "doctor" ? fetchDoctors() : fetchPatients();
-    } catch (err) {
-      addToast(err.response?.data?.message || "Failed to add user", "error");
+const handleAddUser = async (e) => {
+  e.preventDefault();
+  setAddLoading(true);
+  setAddError(null);
+  setAddSuccess(null);
+  try {
+    if (addRole === 'doctor') {
+      await axios.post(`${import.meta.env.VITE_API_URL}/admin/doctor`, {
+        name: addName,
+        email: addEmail,
+        password: addPassword,
+        speciality: addSpeciality,
+        fees: addFees
+      }, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      fetchDoctors();
+    } else {
+      await axios.post(`${import.meta.env.VITE_API_URL}/admin/patient`, {
+        name: addName,
+        email: addEmail,
+        password: addPassword
+      }, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      fetchPatients();
     }
-    setAddLoading(false);
-  };
+    setAddSuccess('User added successfully!');
+    addToast('User added successfully!', 'success');
+    setAddName('');
+    setAddEmail('');
+    setAddPassword('');
+    setAddSpeciality('');
+    setAddFees('');
+  } catch (err) {
+    setAddError(err.response?.data?.message || 'Failed to add user');
+    addToast(err.response?.data?.message || 'Failed to add user', 'error');
+  }
+  setAddLoading(false);
+};
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-950 py-10 px-6">
@@ -184,11 +213,14 @@ export default function AdminDashboard() {
       Test Bookings
     </TabsTrigger>
               <TabsTrigger value="feedback" className="flex items-center gap-2">
-                <MessageSquare className="w-4 h-4" /> Feedback
-              </TabsTrigger>
-              <TabsTrigger value="adduser" className="flex items-center gap-2">
-                <Plus className="w-4 h-4" /> Add User
-              </TabsTrigger>
+                <MessageSquare className="w-4 h-4" /> Feedback         
+    </TabsTrigger>
+    
+    <TabsTrigger value="adduser" className="flex items-center gap-2">
+      <Plus className="w-4 h-4" /> Add User
+    </TabsTrigger>
+    
+
             </TabsList>
 
             {/* Appointments */}
@@ -236,40 +268,45 @@ export default function AdminDashboard() {
               )}
             </TabsContent>
 
-            {/* Doctors */}
-            <TabsContent value="doctors" className="mt-6">
-              <h3 className="text-lg font-semibold text-sky-700 mb-3">Doctors</h3>
-              {doctors.length === 0 ? (
-                <p className="text-gray-500">No doctors found.</p>
-              ) : (
-                <Table>
-                  <TableHeader>
-                    <TableRow>
-                      <TableHead>Name</TableHead>
-                      <TableHead>Email</TableHead>
-                      <TableHead className="text-center">Action</TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {doctors.map((d) => (
-                      <TableRow key={d._id}>
-                        <TableCell>{d.name}</TableCell>
-                        <TableCell>{d.email}</TableCell>
-                        <TableCell className="text-center">
-                          <Button
-                            variant="destructive"
-                            size="sm"
-                            onClick={() => handleDelete(d._id, "doctor")}
-                          >
-                            <Trash2 className="w-4 h-4 mr-1" /> Delete
-                          </Button>
-                        </TableCell>
-                      </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
-              )}
-            </TabsContent>
+        {/* Doctors */}
+<TabsContent value="doctors" className="mt-6">
+  <h3 className="text-lg font-semibold text-sky-700 mb-3">Doctors</h3>
+
+  {doctors.length === 0 ? (
+    <p className="text-gray-500">No doctors found.</p>
+  ) : (
+    <Table>
+      <TableHeader>
+        <TableRow>
+          <TableHead>Name</TableHead>
+          <TableHead>Email</TableHead>
+          <TableHead>Speciality</TableHead>
+          <TableHead className="text-center">Action</TableHead>
+        </TableRow>
+      </TableHeader>
+      <TableBody>
+        {doctors.map((d) => (
+          <TableRow key={d._id}>
+            <TableCell>{d.name}</TableCell>
+            <TableCell>{d.email}</TableCell>
+            <TableCell>{d.speciality || '-'}</TableCell>
+            <TableCell className="text-center">
+              <Button
+               variant="outline"
+                      size="sm"
+                      className="text-red-600 border-red-300 hover:bg-red-50"
+                onClick={() => handleDelete(d._id, "doctor")}
+              >
+                <Trash2 className="w-4 h-4 mr-1" /> Delete
+              </Button>
+            </TableCell>
+          </TableRow>
+        ))}
+      </TableBody>
+    </Table>
+  )}
+</TabsContent>
+
 
             {/* Patients */}
             <TabsContent value="patients" className="mt-6">
@@ -292,8 +329,9 @@ export default function AdminDashboard() {
                         <TableCell>{p.email}</TableCell>
                         <TableCell className="text-center">
                           <Button
-                            variant="destructive"
-                            size="sm"
+                            variant="outline"
+                      size="sm"
+                      className="text-red-600 border-red-300 hover:bg-red-50"
                             onClick={() => handleDelete(p._id, "patient")}
                           >
                             <Trash2 className="w-4 h-4 mr-1" /> Delete
@@ -350,115 +388,276 @@ export default function AdminDashboard() {
             </TabsContent>
 
             {/* Feedback */}
-            <TabsContent value="feedback" className="mt-6">
-              <h3 className="text-lg font-semibold text-sky-700 mb-3">Feedback</h3>
-              {feedback.length === 0 ? (
-                <p className="text-gray-500">No feedback found.</p>
-              ) : (
-                <Table>
-                  <TableHeader>
-                    <TableRow>
-                      <TableHead>Date</TableHead>
-                      <TableHead>Patient</TableHead>
-                      <TableHead>Message</TableHead>
-                      <TableHead>Rating</TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {feedback.map((f) => (
-                      <TableRow key={f._id}>
-                        <TableCell>{new Date(f.createdAt).toLocaleDateString()}</TableCell>
-                        <TableCell>{f.patient?.name}</TableCell>
-                        <TableCell>{f.message}</TableCell>
-                        <TableCell>
-                          <span className="px-2 py-1 text-xs rounded-full bg-sky-100 text-sky-700">
-                            {f.rating}
-                          </span>
-                        </TableCell>
-                      </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
-              )}
-            </TabsContent>
+<TabsContent value="feedback" className="mt-6">
+  <div className="max-w-5xl mx-auto bg-white/70 dark:bg-gray-900/70 backdrop-blur-lg rounded-2xl shadow-xl border border-gray-200 dark:border-gray-800 overflow-hidden transition-all duration-300">
+    
+    {/* Header */}
+<div className="px-6 py-5 border-b border-gray-200 dark:border-gray-800 
+  bg-gradient-to-r from-sky-600 via-cyan-500 to-emerald-400 
+  text-white shadow-md">
+  <h3 className="text-2xl font-bold tracking-wide flex items-center gap-2 drop-shadow-sm">
+    <i className="bi bi-chat-dots"></i> User Feedback
+  </h3>
+  <p className="text-sm opacity-95 font-medium tracking-wide">
+    Patient opinions and experiences at a glance.
+  </p>
+</div>
+
+
+    {/* Content */}
+    <div className="p-6">
+      {feedback.length === 0 ? (
+<div className="px-6 py-5 border-b border-gray-200 dark:border-gray-800 
+  bg-gradient-to-r from-sky-600 via-cyan-500 to-emerald-400 
+  dark:bg-gradient-to-r dark:from-sky-700 dark:via-indigo-600 dark:to-blue-700
+  text-white shadow-md">
+          <i className="bi bi-emoji-neutral text-5xl mb-3 text-gray-400 dark:text-gray-500"></i>
+          <p className="text-lg font-medium">No feedback available yet.</p>
+          <p className="text-sm text-gray-400">Once patients submit feedback, it will appear here.</p>
+        </div>
+      ) : (
+        <div className="overflow-x-auto rounded-xl border border-gray-100 dark:border-gray-800 shadow-inner">
+          <Table className="w-full text-sm">
+            <TableHeader>
+              <TableRow className="bg-gradient-to-r from-sky-100 to-blue-100 dark:from-gray-800 dark:to-gray-900 text-gray-700 dark:text-gray-300">
+                <TableHead className="font-semibold py-3 px-4">Date</TableHead>
+                <TableHead className="font-semibold py-3 px-4">Patient</TableHead>
+                <TableHead className="font-semibold py-3 px-4">Message</TableHead>
+                <TableHead className="font-semibold py-3 px-4 text-center">Rating</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {feedback.map((f) => (
+                <TableRow
+                  key={f._id}
+                  className="hover:bg-sky-50 dark:hover:bg-gray-800 transition-all duration-200"
+                >
+                  <TableCell className="py-3 px-4 text-gray-700 dark:text-gray-300">
+                    {new Date(f.createdAt).toLocaleDateString()}
+                  </TableCell>
+                  <TableCell className="py-3 px-4 font-medium text-gray-800 dark:text-gray-200">
+                    {f.patient?.name || "—"}
+                  </TableCell>
+                  <TableCell className="py-3 px-4 text-gray-600 dark:text-gray-400 max-w-xs truncate">
+                    {f.message}
+                  </TableCell>
+                  <TableCell className="py-3 px-4 text-center">
+                    <span
+                      className={`inline-block px-3 py-1 text-xs font-semibold rounded-full shadow-sm animate-fade-in ${
+                        f.rating >= 4
+                          ? "bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400"
+                          : f.rating === 3
+                          ? "bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400"
+                          : "bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400"
+                      }`}
+                    >
+                      ⭐ {f.rating}
+                    </span>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </div>
+      )}
+    </div>
+  </div>
+</TabsContent>
+
 
             {/* Add User */}
-            <TabsContent value="adduser" className="mt-6">
-              <Card className="max-w-md mx-auto shadow-md border border-gray-200 dark:border-gray-800">
-                <CardHeader>
-                  <CardTitle className="text-sky-600 text-lg">Add Doctor or Patient</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <form onSubmit={handleAddUser} className="space-y-4">
-                    <div>
-                      <label className="text-sm font-medium text-gray-700 dark:text-gray-300">
-                        Role
-                      </label>
-                      <Select value={addRole} onValueChange={setAddRole}>
-                        <SelectTrigger>
-                          <span className="capitalize">{addRole}</span>
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="doctor">Doctor</SelectItem>
-                          <SelectItem value="patient">Patient</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </div>
+<TabsContent value="adduser" className="mt-8 animate-fade-in">
+  <Card className="max-w-3xl mx-auto bg-white/80 dark:bg-gray-900/80 backdrop-blur-lg border border-gray-200 dark:border-gray-800 shadow-2xl rounded-2xl transition-all duration-500 hover:shadow-blue-200 dark:hover:shadow-blue-900">
+    
+    {/* Header */}
+    <CardHeader className="bg-gradient-to-r from-sky-600 via-cyan-500 to-emerald-400 dark:from-sky-800 dark:via-blue-800 dark:to-indigo-900 rounded-t-2xl text-white shadow-md">
+      <CardTitle className="text-xl font-bold tracking-wide flex items-center gap-2">
+        <i className="bi bi-person-plus-fill text-white text-xl"></i> Add Doctor or Patient
+      </CardTitle>
+      <p className="text-sm opacity-90 font-medium">Register new users easily below 👇</p>
+    </CardHeader>
 
-                    <div>
-                      <label className="text-sm font-medium text-gray-700 dark:text-gray-300">
-                        Name
-                      </label>
-                      <Input
-                        value={addName}
-                        onChange={(e) => setAddName(e.target.value)}
-                        placeholder="Enter name"
-                        required
-                      />
-                    </div>
+    {/* Form */}
+    <CardContent className="p-8">
+      <form onSubmit={handleAddUser} className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        
+        {/* Role */}
+        <div className="md:col-span-2">
+          <label className="text-sm font-semibold text-gray-700 dark:text-gray-300 flex items-center gap-2">
+            <i className="bi bi-person-badge"></i> Role
+          </label>
+         <Select value={addRole} onValueChange={setAddRole}>
+  <SelectTrigger
+    className="mt-1 bg-gradient-to-r from-white to-gray-50 dark:from-gray-800 dark:to-gray-900 
+    border border-gray-300 dark:border-gray-700 rounded-lg 
+    hover:border-sky-400 focus:border-sky-500 focus:ring-2 focus:ring-sky-300 
+    shadow-[0_2px_6px_rgba(0,0,0,0.1)] dark:shadow-[0_2px_8px_rgba(0,0,0,0.5)] 
+    transition-all duration-300"
+  >
+    <span className="capitalize text-gray-800 dark:text-gray-100">{addRole}</span>
+  </SelectTrigger>
 
-                    <div>
-                      <label className="text-sm font-medium text-gray-700 dark:text-gray-300">
-                        Email
-                      </label>
-                      <Input
-                        type="email"
-                        value={addEmail}
-                        onChange={(e) => setAddEmail(e.target.value)}
-                        placeholder="Enter email"
-                        required
-                      />
-                    </div>
+  <SelectContent
+    className="bg-white dark:bg-gray-900 text-gray-800 dark:text-gray-100 
+    border border-gray-200 dark:border-gray-700 rounded-lg 
+    shadow-lg animate-fade-in"
+  >
+    <SelectItem
+      value="doctor"
+      className="hover:bg-sky-100 dark:hover:bg-sky-900 cursor-pointer px-3 py-2 rounded-md transition"
+    >
+      Doctor
+    </SelectItem>
+    <SelectItem
+      value="patient"
+      className="hover:bg-sky-100 dark:hover:bg-sky-900 cursor-pointer px-3 py-2 rounded-md transition"
+    >
+      Patient
+    </SelectItem>
+  </SelectContent>
+</Select>
 
-                    <div>
-                      <label className="text-sm font-medium text-gray-700 dark:text-gray-300">
-                        Password
-                      </label>
-                      <Input
-                        type="password"
-                        value={addPassword}
-                        onChange={(e) => setAddPassword(e.target.value)}
-                        placeholder="Enter password"
-                        required
-                      />
-                    </div>
+        </div>
 
-                    <Button
-                      type="submit"
-                      className="w-full bg-sky-600 hover:bg-sky-700 text-white"
-                      disabled={addLoading}
-                    >
-                      {addLoading ? (
-                        <Loader2 className="w-4 h-4 animate-spin mr-1" />
-                      ) : (
-                        <Plus className="w-4 h-4 mr-1" />
-                      )}
-                      {addLoading ? "Adding..." : "Add User"}
-                    </Button>
-                  </form>
-                </CardContent>
-              </Card>
-            </TabsContent>
+        {/* Name */}
+        <div>
+          <label className="text-sm font-semibold text-gray-700 dark:text-gray-300 flex items-center gap-2">
+            <i className="bi bi-person-circle"></i> Name
+          </label>
+          <Input
+            type="text"
+            value={addName}
+            onChange={(e) => setAddName(e.target.value)}
+            placeholder="Enter full name"
+            className="mt-1 focus:ring-2 focus:ring-sky-500"
+            required
+          />
+        </div>
+
+        {/* Email */}
+        <div>
+          <label className="text-sm font-semibold text-gray-700 dark:text-gray-300 flex items-center gap-2">
+            <i className="bi bi-envelope"></i> Email
+          </label>
+          <Input
+            type="email"
+            value={addEmail}
+            onChange={(e) => setAddEmail(e.target.value)}
+            placeholder="Enter email"
+            className="mt-1 focus:ring-2 focus:ring-sky-500"
+            required
+          />
+        </div>
+
+        {/* Password */}
+        <div>
+          <label className="text-sm font-semibold text-gray-700 dark:text-gray-300 flex items-center gap-2">
+            <i className="bi bi-shield-lock"></i> Password
+          </label>
+          <Input
+            type="password"
+            value={addPassword}
+            onChange={(e) => setAddPassword(e.target.value)}
+            placeholder="Enter password"
+            className="mt-1 focus:ring-2 focus:ring-sky-500"
+            required
+          />
+        </div>
+
+        {/* Doctor Fields */}
+        {addRole === "doctor" && (
+          <>
+            <div>
+              <label className="text-sm font-semibold text-gray-700 dark:text-gray-300 flex items-center gap-2">
+                <i className="bi bi-clipboard2-pulse"></i> Speciality
+              </label>
+              <Select value={addSpeciality} onValueChange={setAddSpeciality} required>
+                <SelectTrigger className="mt-1 bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-700 shadow-sm focus:ring-2 focus:ring-sky-500">
+                  <span>{addSpeciality || "Select Speciality"}</span>
+                </SelectTrigger>
+                <SelectContent>
+                  {SPECIALITIES.map((spec) => (
+                    <SelectItem key={spec} value={spec}>
+                      {spec}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+
+            <div>
+              <label className="text-sm font-semibold text-gray-700 dark:text-gray-300 flex items-center gap-2">
+                <i className="bi bi-currency-rupee"></i> Consultation Fees
+              </label>
+              <Input
+                type="number"
+                value={addFees}
+                onChange={(e) => setAddFees(e.target.value)}
+                min="0"
+                placeholder="Enter fee"
+                className="mt-1 focus:ring-2 focus:ring-sky-500"
+                required
+              />
+            </div>
+          </>
+        )}
+
+        {/* Alerts */}
+        <div className="md:col-span-2">
+          {addError && (
+            <div className="bg-red-100 border border-red-300 text-red-700 px-3 py-2 rounded-md mb-3 animate-fade-in shadow-sm">
+              {addError}
+            </div>
+          )}
+          {addSuccess && (
+            <div className="bg-emerald-100 border border-emerald-300 text-emerald-700 px-3 py-2 rounded-md mb-3 animate-fade-in shadow-sm">
+              {addSuccess}
+            </div>
+          )}
+
+          {/* Buttons */}
+          <div className="flex flex-wrap gap-4">
+            <Button
+              type="submit"
+              className="bg-gradient-to-r from-sky-600 to-cyan-600 hover:from-sky-700 hover:to-cyan-700 text-white font-medium shadow-md"
+              disabled={addLoading}
+            >
+              {addLoading ? (
+                <>
+                  <Loader2 className="w-4 h-4 animate-spin mr-1" /> Adding...
+                </>
+              ) : (
+                <>
+                  <Plus className="w-4 h-4 mr-1" /> Add User
+                </>
+              )}
+            </Button>
+
+            <Button
+              type="button"
+              variant="outline"
+              onClick={() => {
+                setAddName("");
+                setAddEmail("");
+                setAddPassword("");
+                setAddRole("doctor");
+                setAddSpeciality("");
+                setAddFees("");
+                setAddError(null);
+                setAddSuccess(null);
+              }}
+              className="border-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800"
+            >
+              <i className="bi bi-arrow-repeat mr-2"></i> Reset
+            </Button>
+          </div>
+        </div>
+      </form>
+    </CardContent>
+  </Card>
+</TabsContent>
+
+
           </Tabs>
         </CardContent>
       </Card>

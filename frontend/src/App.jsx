@@ -13,6 +13,7 @@ import MyTests from './pages/patient/MyTests';
 import DoctorDashboard from './pages/DoctorDashboard';
 import PatientTests from './pages/doctor/PatientTests';
 import AdminDashboard from './pages/AdminDashboard';
+import LabDashboard from './pages/lab/LabDashboard';
 import ManageTests from './pages/admin/ManageTests';
 import ManageTestBookings from './pages/admin/ManageTestBookings';
 import Navbar from './components/Navbar';
@@ -41,6 +42,11 @@ function AppRoutes() {
         <Route path="/admin" element={<ProtectedRoute role="admin"><AdminDashboard /></ProtectedRoute>} />
         <Route path="/admin/manage-tests" element={<ProtectedRoute role="admin"><ManageTests /></ProtectedRoute>} />
         <Route path="/admin/manage-test-bookings" element={<ProtectedRoute role="admin"><ManageTestBookings /></ProtectedRoute>} />
+        {/* Lab Dashboard Routes */}
+        <Route path="/lab" element={<ProtectedRoute role="lab"><LabDashboard /></ProtectedRoute>} />
+        <Route path="/lab/manage-tests" element={<ProtectedRoute role="lab"><ManageTests /></ProtectedRoute>} />
+        <Route path="/lab/manage-test-bookings" element={<ProtectedRoute role="lab"><ManageTestBookings /></ProtectedRoute>} />
+
         <Route path="*" element={<Landing />} />
       </Routes>
     </>

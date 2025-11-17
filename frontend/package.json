@@ -1,6 +1,6 @@
 {
   "type": "module",
-  "name": "medisphere-frontend",
+  "name": "prescripto-frontend",
   "version": "1.0.0",
   "private": true,
   "dependencies": {

@@ -34,17 +34,17 @@ router.get('/', auth, controller.getBookings);
 router.get('/:id', auth, controller.getBookingById);
 
 // Admin updates status
-router.put('/:id/status', auth, role('admin'), controller.updateStatus);
+router.put('/:id/status', auth, role(['admin', 'lab']), controller.updateStatus);
 
 // Admin upload report (PDF)
-router.post('/:id/upload-report', auth, role('admin'), upload.single('report'), controller.uploadReport);
+router.post('/:id/upload-report', auth, role(['admin', 'lab']), upload.single('report'), controller.uploadReport);
 
 // Patient cancel or admin delete
 router.post('/:id/cancel', auth, controller.cancelBooking);
-router.delete('/:id', auth, role('admin'), controller.deleteBooking);
+router.delete('/:id', auth, role(['admin', 'lab']), controller.deleteBooking);
 // Doctor or admin can add notes
 router.put('/:id/notes', auth, (req, res, next) => {
-  const roleAllowed = ['doctor', 'admin'];
+  const roleAllowed = ['doctor', 'admin', 'lab'];
   if (!roleAllowed.includes(req.user.role)) return res.status(403).json({ message: 'Access denied' });
   next();
 }, controller.updateNotes);
