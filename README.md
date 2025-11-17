@@ -23,7 +23,34 @@ Prescripto is a web-based hospital management system designed to simplify appoin
 - View patient list
 - Manage patient records
 - View and monitor all appointments
-- Handle billing workflow
+
+### 🧪Lab
+- Manage Test Record
+- Manage Test Booking (Add/Cancel/Upload Report)
+
+---
+## 🖼️ Screenshots
+
+### Landing Page
+![Landing Page](/frontend/src/assets/ss/landing_home.jpg)
+
+### Login
+![Login](/frontend/src/assets/ss/login.jpg)
+
+### Patient Dashboard
+![Patient Dashboard](/frontend/src/assets/ss/PD.png)
+
+### Doctor Dashboard
+![Doctor Dashboard](/frontend/src/assets/ss/DD.png)
+
+### Appointment Booking
+![Appointment Booking](/frontend/src/assets/ss/book_app.png)
+
+### Book Test
+![Book Test](/frontend/src/assets/ss/book_test.png)
+
+### My Test
+![my Test](/frontend/src/assets/ss/my_test.png)
 
 ---
 
@@ -46,16 +73,18 @@ Prescripto/
 ├── assets/
 └── README.md
 
----
+
 ```
+--- 
 ## ⚙️ Installation
 
 ### ✅ Clone Repository
 ```bash
 git clone https://github.com/your-username/Prescripto.git
 cd Prescripto
----
+
 ```
+--- 
 ## 🎯 Highlights
 
 - Real-world hospital flow simulation
