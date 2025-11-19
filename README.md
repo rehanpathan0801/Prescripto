@@ -76,15 +76,7 @@ Prescripto/
 
 ```
 --- 
-## ⚙️ Installation
 
-### ✅ Clone Repository
-```bash
-git clone https://github.com/your-username/Prescripto.git
-cd Prescripto
-
-```
---- 
 ## 🎯 Highlights
 
 - Real-world hospital flow simulation
