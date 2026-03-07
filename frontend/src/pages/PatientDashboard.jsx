@@ -228,19 +228,16 @@ export default function PatientDashboard() {
         <CardContent className="px-6 py-4">
           <Tabs value={tab} onValueChange={setTab}>
             <div className="mb-4">
-              <TabsList className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3 bg-sky-50 dark:bg-gray-800 rounded-xl p-1 h-14 shadow-sm">
-
+<TabsList className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-2 sm:gap-3 bg-sky-50 dark:bg-gray-800 rounded-xl p-2 shadow-sm">
                 <TabsTrigger
                   value="appointments"
-                  className="data-[state=active]:bg-sky-600 data-[state=active]:text-white rounded-lg flex items-center justify-center gap-2 py-2.5 font-medium transition-all hover:bg-sky-100 dark:hover:bg-gray-700"
-                >
+className="data-[state=active]:bg-sky-600 data-[state=active]:text-white rounded-lg flex items-center justify-center text-center gap-2 py-2 px-2 text-sm sm:text-base font-medium transition-all hover:bg-sky-100 dark:hover:bg-gray-700"                >
                  Appointments
                 </TabsTrigger>
 
                 <TabsTrigger
                   value="book"
-                  className="data-[state=active]:bg-sky-600 data-[state=active]:text-white rounded-lg flex items-center justify-center gap-2 py-2.5 font-medium transition-all hover:bg-sky-100 dark:hover:bg-gray-700"
-                >
+className="data-[state=active]:bg-sky-600 data-[state=active]:text-white rounded-lg flex items-center justify-center text-center gap-2 py-2 px-2 text-sm sm:text-base font-medium transition-all hover:bg-sky-100 dark:hover:bg-gray-700"                >
                    Book Appointment
                 </TabsTrigger>
 
@@ -249,23 +246,20 @@ export default function PatientDashboard() {
                 <TabsTrigger
                   value="book-test"
                   onClick={() => navigate("/book-test")}
-                  className="data-[state=active]:bg-sky-600 data-[state=active]:text-white rounded-lg flex items-center justify-center gap-2 py-2.5 font-medium transition-all hover:bg-sky-100  dark:hover:bg-gray-700"
-                >
+className="data-[state=active]:bg-sky-600 data-[state=active]:text-white rounded-lg flex items-center justify-center text-center gap-2 py-2 px-2 text-sm sm:text-base font-medium transition-all hover:bg-sky-100 dark:hover:bg-gray-700"                >
                  Book Test
                 </TabsTrigger>
 
                 <TabsTrigger
                   value="my-tests"
                   onClick={() => navigate("/my-tests")}
-                  className="data-[state=active]:bg-sky-600 data-[state=active]:text-white rounded-lg flex items-center justify-center gap-2 py-2.5 font-medium transition-all hover:bg-sky-100 dark:hover:bg-gray-700"
-                >
+className="data-[state=active]:bg-sky-600 data-[state=active]:text-white rounded-lg flex items-center justify-center text-center gap-2 py-2 px-2 text-sm sm:text-base font-medium transition-all hover:bg-sky-100 dark:hover:bg-gray-700"                >
                    My Tests
                 </TabsTrigger>
                  <TabsTrigger
                  
                   value="feedback"
-                  className="data-[state=active]:bg-sky-600 data-[state=active]:text-white rounded-lg flex items-center justify-center gap-2 py-2.5 font-medium transition-all hover:bg-sky-100 dark:hover:bg-gray-700"
-                >
+className="data-[state=active]:bg-sky-600 data-[state=active]:text-white rounded-lg flex items-center justify-center text-center gap-2 py-2 px-2 text-sm sm:text-base font-medium transition-all hover:bg-sky-100 dark:hover:bg-gray-700"                >
                   Feedback
                   
                 </TabsTrigger>
