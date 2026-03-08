@@ -3,7 +3,6 @@ import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { AuthContext } from '../contexts/AuthContext';
 import PrescriptionTemplate from '../components/PrescriptionTemplate';
-import { jsPDF } from "jspdf";
 import html2canvas from 'html2canvas';
 
 export default function PrescriptionPage() {
@@ -33,33 +32,37 @@ export default function PrescriptionPage() {
   }, [id, token]);
 
   const downloadPDF = async () => {
-    if (!prescription) return;
-    setDownloading(true);
-    try {
-      const input = document.getElementById('prescription-to-pdf');
-      if (!input) throw new Error('Printable element not found');
+  if (!prescription) return;
+  setDownloading(true);
 
-      const canvas = await html2canvas(input, { scale: 2, useCORS: true });
-      const imgData = canvas.toDataURL('image/png');
+  try {
+    const { jsPDF } = await import("jspdf"); // dynamic import
 
-      const pdf = new jsPDF('p', 'mm', 'a4');
-      const pdfWidth = pdf.internal.pageSize.getWidth();
-      const imgProps = pdf.getImageProperties(imgData);
-      const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
+    const input = document.getElementById("prescription-to-pdf");
+    if (!input) throw new Error("Printable element not found");
 
-      pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
+    const canvas = await html2canvas(input, { scale: 2, useCORS: true });
+    const imgData = canvas.toDataURL("image/png");
 
-      const filename = `${prescription.patientName || 'prescription'}_${new Date(
-        prescription.date
-      ).toISOString().slice(0, 10)}.pdf`;
-      pdf.save(filename);
-    } catch (err) {
-      console.error(err);
-      alert('Could not generate PDF. See console for details.');
-    } finally {
-      setDownloading(false);
-    }
-  };
+    const pdf = new jsPDF("p", "mm", "a4");
+    const pdfWidth = pdf.internal.pageSize.getWidth();
+    const imgProps = pdf.getImageProperties(imgData);
+    const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
+
+    pdf.addImage(imgData, "PNG", 0, 0, pdfWidth, pdfHeight);
+
+    const filename = `${prescription.patientName || "prescription"}_${new Date(
+      prescription.date
+    ).toISOString().slice(0, 10)}.pdf`;
+
+    pdf.save(filename);
+  } catch (err) {
+    console.error(err);
+    alert("Could not generate PDF. See console for details.");
+  } finally {
+    setDownloading(false);
+  }
+};
 
   const print = () => {
     window.print();
