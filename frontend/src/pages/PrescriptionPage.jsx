@@ -3,7 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { AuthContext } from '../contexts/AuthContext';
 import PrescriptionTemplate from '../components/PrescriptionTemplate';
-import jsPDF from 'jspdf';
+import { jsPDF } from "jspdf";
 import html2canvas from 'html2canvas';
 
 export default function PrescriptionPage() {
