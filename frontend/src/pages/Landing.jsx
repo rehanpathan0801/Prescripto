@@ -14,7 +14,7 @@ export default function Landing() {
       <LandingNavbar />
 
       {/* HERO SECTION */}
-      <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-br from-blue-50 via-cyan-100 to-white dark:from-gray-900 dark:via-gray-950 dark:to-black">
+      <section className="relative min-h-screen pt-24 md:pt-32 flex items-center justify-center overflow-visible bg-gradient-to-br from-blue-50 via-cyan-100 to-white dark:from-gray-900 dark:via-gray-950 dark:to-black">
         {/* Decorative background blobs */}
         <div className="absolute w-[400px] h-[400px] bg-blue-300/30 dark:bg-blue-600/20 rounded-full blur-3xl -top-20 -left-20 animate-pulse" />
         <div className="absolute w-[300px] h-[300px] bg-cyan-300/30 dark:bg-cyan-600/20 rounded-full blur-3xl bottom-0 right-0 animate-pulse" />
@@ -27,7 +27,7 @@ export default function Landing() {
             transition={{ duration: 0.8 }}
             className="space-y-6 text-center md:text-left"
           >
-            <h1 className="text-5xl md:text-6xl font-extrabold leading-tight text-gray-900 dark:text-white">
+            <h1 className="text-3xl sm:text-4xl md:text-6xl font-extrabold leading-tight text-gray-900 dark:text-white">
               Revolutionizing <br />
               <span className="bg-gradient-to-r from-sky-600 to-cyan-500 text-transparent bg-clip-text">
                 Digital Healthcare
