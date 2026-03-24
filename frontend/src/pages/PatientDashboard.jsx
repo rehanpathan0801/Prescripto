@@ -227,9 +227,11 @@ export default function PatientDashboard() {
 
         <CardContent className="px-6 py-4">
           <Tabs value={tab} onValueChange={setTab}>
-            <div className="w-full overflow-hidden">
-<TabsList style={{ scrollBehavior: "smooth" }} className="flex overflow-x-auto scrollbar-hide gap-2 bg-sky-50 dark:bg-gray-800 rounded-xl p-2 shadow-sm pl-1 pr-1 min-w-full">
-                <TabsTrigger
+            <div className="w-full overflow-hidden px-2">
+<TabsList
+  style={{ scrollBehavior: "smooth" }}
+  className="flex overflow-x-auto scrollbar-hide gap-2 bg-sky-50 dark:bg-gray-800 rounded-xl p-2 shadow-sm justify-start"
+>                <TabsTrigger
                   value="appointments"
 className="flex-shrink-0 data-[state=active]:bg-sky-600 data-[state=active]:text-white rounded-lg flex items-center justify-center text-center gap-2 py-2 px-4 text-sm font-medium transition-all hover:bg-sky-100 dark:hover:bg-gray-700 whitespace-nowrap"         >
                  Appointments
