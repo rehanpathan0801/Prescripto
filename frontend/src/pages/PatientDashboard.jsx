@@ -227,18 +227,17 @@ export default function PatientDashboard() {
 
         <CardContent className="px-6 py-4">
           <Tabs value={tab} onValueChange={setTab}>
-            <div className="mb-4">
-<TabsList className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-2 sm:gap-3 bg-sky-50 dark:bg-gray-800 rounded-xl p-2 shadow-sm">
+            <div className="w-full overflow-hidden">
+<TabsList style={{ scrollBehavior: "smooth" }} className="flex overflow-x-auto scrollbar-hide gap-2 bg-sky-50 dark:bg-gray-800 rounded-xl p-2 shadow-sm pl-1 pr-1 min-w-full">
                 <TabsTrigger
                   value="appointments"
-className="data-[state=active]:bg-sky-600 data-[state=active]:text-white rounded-lg flex items-center justify-center text-center gap-2 py-2 px-2 text-sm sm:text-base font-medium transition-all hover:bg-sky-100 dark:hover:bg-gray-700"                >
+className="flex-shrink-0 data-[state=active]:bg-sky-600 data-[state=active]:text-white rounded-lg flex items-center justify-center text-center gap-2 py-2 px-4 text-sm font-medium transition-all hover:bg-sky-100 dark:hover:bg-gray-700 whitespace-nowrap"         >
                  Appointments
                 </TabsTrigger>
 
                 <TabsTrigger
                   value="book"
-className="data-[state=active]:bg-sky-600 data-[state=active]:text-white rounded-lg flex items-center justify-center text-center gap-2 py-2 px-2 text-sm sm:text-base font-medium transition-all hover:bg-sky-100 dark:hover:bg-gray-700"                >
-                   Book Appointment
+className="flex-shrink-0 data-[state=active]:bg-sky-600 data-[state=active]:text-white rounded-lg flex items-center justify-center text-center gap-2 py-2 px-4 text-sm font-medium transition-all hover:bg-sky-100 dark:hover:bg-gray-700 whitespace-nowrap" >                   Book Appointment
                 </TabsTrigger>
 
                
@@ -246,21 +245,18 @@ className="data-[state=active]:bg-sky-600 data-[state=active]:text-white rounded
                 <TabsTrigger
                   value="book-test"
                   onClick={() => navigate("/book-test")}
-className="data-[state=active]:bg-sky-600 data-[state=active]:text-white rounded-lg flex items-center justify-center text-center gap-2 py-2 px-2 text-sm sm:text-base font-medium transition-all hover:bg-sky-100 dark:hover:bg-gray-700"                >
-                 Book Test
+className="flex-shrink-0 data-[state=active]:bg-sky-600 data-[state=active]:text-white rounded-lg flex items-center justify-center text-center gap-2 py-2 px-4 text-sm font-medium transition-all hover:bg-sky-100 dark:hover:bg-gray-700 whitespace-nowrap" >                 Book Test
                 </TabsTrigger>
 
                 <TabsTrigger
                   value="my-tests"
                   onClick={() => navigate("/my-tests")}
-className="data-[state=active]:bg-sky-600 data-[state=active]:text-white rounded-lg flex items-center justify-center text-center gap-2 py-2 px-2 text-sm sm:text-base font-medium transition-all hover:bg-sky-100 dark:hover:bg-gray-700"                >
-                   My Tests
+className="flex-shrink-0 data-[state=active]:bg-sky-600 data-[state=active]:text-white rounded-lg flex items-center justify-center text-center gap-2 py-2 px-4 text-sm font-medium transition-all hover:bg-sky-100 dark:hover:bg-gray-700 whitespace-nowrap" >                   My Tests
                 </TabsTrigger>
                  <TabsTrigger
                  
                   value="feedback"
-className="data-[state=active]:bg-sky-600 data-[state=active]:text-white rounded-lg flex items-center justify-center text-center gap-2 py-2 px-2 text-sm sm:text-base font-medium transition-all hover:bg-sky-100 dark:hover:bg-gray-700"                >
-                  Feedback
+className="flex-shrink-0 data-[state=active]:bg-sky-600 data-[state=active]:text-white rounded-lg flex items-center justify-center text-center gap-2 py-2 px-4 text-sm font-medium transition-all hover:bg-sky-100 dark:hover:bg-gray-700 whitespace-nowrap" >                  Feedback
                   
                 </TabsTrigger>
               </TabsList>
@@ -281,8 +277,8 @@ className="data-[state=active]:bg-sky-600 data-[state=active]:text-white rounded
                 ) : appointments.length === 0 ? (
                   <div className="text-center py-8 text-gray-500">No upcoming appointments.</div>
                 ) : (
-                  <div className="overflow-x-auto">
-                    <table className="w-full text-sm border-collapse">
+                  <div className="overflow-x-auto rounded-lg">
+                    <table className="min-w-[700px] w-full text-sm border-collapse">
                       <thead className="bg-gray-100 dark:bg-gray-800">
 
                         <tr>

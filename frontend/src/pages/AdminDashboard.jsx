@@ -185,21 +185,25 @@ const handleAddUser = async (e) => {
 
         <CardContent className="pt-6">
           <Tabs value={tab} onValueChange={setTab}>
-            <TabsList className="flex flex-wrap justify-center gap-6 bg-sky-50 dark:bg-gray-900 rounded-lg p-2">
-              <TabsTrigger value="appointments" className="flex items-center gap-2">
+            <div className="w-full overflow-hidden">
+            <TabsList
+  className="flex overflow-x-auto scrollbar-hide gap-2 bg-sky-50 dark:bg-gray-900 rounded-lg p-2 justify-start"
+  style={{ scrollBehavior: "smooth" }}
+>
+  
+              <TabsTrigger value="appointments" className="flex-shrink-0 flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium whitespace-nowrap transition-all data-[state=active]:bg-sky-600 data-[state=active]:text-white hover:bg-sky-100 dark:hover:bg-gray-800">
                 <CalendarCheck className="w-4 h-4" /> Appointments
               </TabsTrigger>
-              <TabsTrigger value="doctors" className="flex items-center gap-2">
+              <TabsTrigger value="doctors" className="flex-shrink-0 flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium whitespace-nowrap transition-all data-[state=active]:bg-sky-600 data-[state=active]:text-white hover:bg-sky-100 dark:hover:bg-gray-800">
                 <Stethoscope className="w-4 h-4" /> Doctors
               </TabsTrigger>
-              <TabsTrigger value="patients" className="flex items-center gap-2">
+              <TabsTrigger value="patients" className="flex-shrink-0 flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium whitespace-nowrap transition-all data-[state=active]:bg-sky-600 data-[state=active]:text-white hover:bg-sky-100 dark:hover:bg-gray-800">
                 <Users className="w-4 h-4" /> Patients
               </TabsTrigger>
               <TabsTrigger
       value="manage-tests"
       onClick={() => navigate("/admin/manage-tests")}
-      className="flex items-center gap-2 cursor-pointer transition-colors data-[state=active]:bg-blue-100 data-[state=active]:text-blue-700"
-    >
+className="flex-shrink-0 flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium whitespace-nowrap transition-all data-[state=active]:bg-sky-600 data-[state=active]:text-white hover:bg-sky-100 dark:hover:bg-gray-800"    >
       <ClipboardList className="w-4 h-4" />
       Manage Tests
     </TabsTrigger>
@@ -207,21 +211,21 @@ const handleAddUser = async (e) => {
     <TabsTrigger
       value="manage-test-bookings"
       onClick={() => navigate("/admin/manage-test-bookings")}
-      className="flex items-center gap-2 cursor-pointer transition-colors data-[state=active]:bg-blue-100 data-[state=active]:text-blue-700"
-    >
+className="flex-shrink-0 flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium whitespace-nowrap transition-all data-[state=active]:bg-sky-600 data-[state=active]:text-white hover:bg-sky-100 dark:hover:bg-gray-800"    >
       <ClipboardList className="w-4 h-4" />
       Test Bookings
     </TabsTrigger>
-              <TabsTrigger value="feedback" className="flex items-center gap-2">
+              <TabsTrigger value="feedback" className="flex-shrink-0 flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium whitespace-nowrap transition-all data-[state=active]:bg-sky-600 data-[state=active]:text-white hover:bg-sky-100 dark:hover:bg-gray-800">
                 <MessageSquare className="w-4 h-4" /> Feedback         
     </TabsTrigger>
     
-    <TabsTrigger value="adduser" className="flex items-center gap-2">
+    <TabsTrigger value="adduser" className="flex-shrink-0 flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium whitespace-nowrap transition-all data-[state=active]:bg-sky-600 data-[state=active]:text-white hover:bg-sky-100 dark:hover:bg-gray-800">
       <Plus className="w-4 h-4" /> Add User
     </TabsTrigger>
     
 
             </TabsList>
+            </div>
 
             {/* Appointments */}
             <TabsContent value="appointments" className="mt-6">
