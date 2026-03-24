@@ -3,50 +3,79 @@ const router = express.Router();
 const auth = require('../middleware/auth');
 const role = require('../middleware/role');
 const controller = require('../controllers/testBookingController');
-const multer = require('multer');
-const path = require('path');
-const fs = require('fs');
 
-// Ensure uploads/reports exists
-const uploadDir = path.join(__dirname, '..', 'uploads', 'reports');
-fs.mkdirSync(uploadDir, { recursive: true });
+// ✅ NEW: Cloudinary setup
+const multer = require("multer");
+const { CloudinaryStorage } = require("multer-storage-cloudinary");
+const cloudinary = require("../config/cloudinary");
 
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, uploadDir);
+// ✅ Cloudinary storage
+const storage = new CloudinaryStorage({
+  cloudinary,
+  params: {
+    folder: "prescripto-reports",
+    resource_type: "auto",
+    type: "upload", // ✅ VERY IMPORTANT (makes it public)
+    public_id: (req, file) => {
+      const name = file.originalname.replace(/\.[^/.]+$/, "");
+      return Date.now() + "-" + name;
+    },
   },
-  filename: function (req, file, cb) {
-    const ext = path.extname(file.originalname);
-    cb(null, `${Date.now()}-${Math.round(Math.random()*1e9)}${ext}`);
-  }
 });
 
-const upload = multer({ storage, fileFilter: (req, file, cb) => {
-  if (file.mimetype !== 'application/pdf') return cb(new Error('Only PDF allowed'));
-  cb(null, true);
-}});
+// ✅ Multer config
+const upload = multer({
+  storage,
+  fileFilter: (req, file, cb) => {
+    if (file.mimetype !== "application/pdf") {
+      return cb(new Error("Only PDF allowed"));
+    }
+    cb(null, true);
+  },
+});
 
 // Patient creates booking
-router.post('/', auth, (req, res, next) => (req.user.role === 'patient' ? next() : res.status(403).json({ message: 'Only patients can book tests' })), controller.createBooking);
+router.post(
+  '/',
+  auth,
+  (req, res, next) =>
+    req.user.role === 'patient'
+      ? next()
+      : res.status(403).json({ message: 'Only patients can book tests' }),
+  controller.createBooking
+);
 
-// Get bookings - admin all, patient own, doctor related
+// Get bookings
 router.get('/', auth, controller.getBookings);
 router.get('/:id', auth, controller.getBookingById);
 
-// Admin updates status
+// Update status
 router.put('/:id/status', auth, role(['admin', 'lab']), controller.updateStatus);
 
-// Admin upload report (PDF)
-router.post('/:id/upload-report', auth, role(['admin', 'lab']), upload.single('report'), controller.uploadReport);
+// ✅ Upload report (Cloudinary)
+router.post(
+  '/:id/upload-report',
+  auth,
+  role(['admin', 'lab']),
+  upload.single('report'),
+  controller.uploadReport
+);
 
-// Patient cancel or admin delete
+// Cancel / delete
 router.post('/:id/cancel', auth, controller.cancelBooking);
 router.delete('/:id', auth, role(['admin', 'lab']), controller.deleteBooking);
-// Doctor or admin can add notes
-router.put('/:id/notes', auth, (req, res, next) => {
-  const roleAllowed = ['doctor', 'admin', 'lab'];
-  if (!roleAllowed.includes(req.user.role)) return res.status(403).json({ message: 'Access denied' });
-  next();
-}, controller.updateNotes);
+
+// Notes
+router.put(
+  '/:id/notes',
+  auth,
+  (req, res, next) => {
+    const roleAllowed = ['doctor', 'admin', 'lab'];
+    if (!roleAllowed.includes(req.user.role))
+      return res.status(403).json({ message: 'Access denied' });
+    next();
+  },
+  controller.updateNotes
+);
 
 module.exports = router;

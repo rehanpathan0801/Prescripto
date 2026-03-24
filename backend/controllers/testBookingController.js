@@ -93,17 +93,30 @@ exports.updateNotes = async (req, res) => {
 // Upload report (admin)
 exports.uploadReport = async (req, res) => {
   try {
-    if (!req.file) return res.status(400).json({ message: 'No file uploaded' });
-    const booking = await TestBooking.findById(req.params.id);
-    if (!booking) return res.status(404).json({ message: 'Booking not found' });
-    // Ensure uploads dir exists is handled by multer destination
-    booking.reportFile = `/uploads/reports/${req.file.filename}`;
-    booking.status = 'Completed';
+    const bookingId = req.params.id;
+
+    if (!req.file) {
+      return res.status(400).json({ message: "No file uploaded" });
+    }
+
+    const fileUrl = req.file.path ;// ✅ Cloudinary URL
+
+    const booking = await TestBooking.findById(bookingId);
+    if (!booking) {
+      return res.status(404).json({ message: "Booking not found" });
+    }
+
+    booking.reportFile = fileUrl;
     await booking.save();
-    const populated = await TestBooking.findById(booking._id).populate('patientId', 'name email').populate('doctorId', 'name email').populate('testId');
-    res.json(populated);
+
+    res.json({
+      message: "Report uploaded successfully",
+      reportFile: fileUrl,
+    });
+
   } catch (err) {
-    res.status(500).json({ message: 'Server error', error: err.message });
+    console.error(err);
+    res.status(500).json({ message: "Upload failed" });
   }
 };
 

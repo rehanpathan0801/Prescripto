@@ -118,7 +118,7 @@ export default function MyTests() {
                   {/* View Report */}
                   {b.reportFile ? (
                     <a
-                      href={`${import.meta.env.VITE_API_URL.replace("/api", "")}${b.reportFile}`}
+                      href={b.reportFile}     
                       target="_blank"
                       rel="noreferrer"
                       className="text-sm bg-green-500 hover:bg-green-600 text-white px-3 py-1.5 rounded-lg transition-all duration-200"

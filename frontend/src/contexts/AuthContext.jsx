@@ -38,20 +38,22 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  const register = async (name, email, password) => {
-    setLoading(true);
-    try {
-      await axios.post(`${apiUrl}/auth/register`, { name, email, password });
+const register = async (name, email, password) => {
+  setLoading(true);
+  try {
+    const apiUrl = import.meta.env.VITE_API_URL;
 
-      setLoading(false);
-      addToast('Registration successful! Please login.', 'success');
-      return true;
-    } catch (err) {
-      addToast(err.response?.data?.message || 'Registration failed', 'error');
-      setLoading(false);
-      return false;
-    }
-  };
+    await axios.post(`${apiUrl}/auth/register`, { name, email, password });
+
+    setLoading(false);
+    addToast('Registration successful! Please login.', 'success');
+    return true;
+  } catch (err) {
+    addToast(err.response?.data?.message || 'Registration failed', 'error');
+    setLoading(false);
+    return false;
+  }
+};
 
   const logout = () => {
     setUser(null);

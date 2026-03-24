@@ -5,6 +5,8 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { motion } from "framer-motion";
 import { Stethoscope, ClipboardList, ShieldCheck, Users2, HeartPulse } from "lucide-react";
+import { Hospital, Mail, Phone, MapPin } from "lucide-react";
+import { Link } from "react-router-dom";
 
 export default function Landing() {
   const navigate = useNavigate();
@@ -171,10 +173,89 @@ export default function Landing() {
         </motion.div>
       </section>
 
-      {/* FOOTER */}
-      <footer className="py-6 bg-gray-100 dark:bg-gray-900 text-center text-gray-600 dark:text-gray-400 text-sm border-t border-gray-200 dark:border-gray-800">
+
+
+    <footer className="bg-gradient-to-br from-sky-50 via-white to-sky-100 dark:from-gray-900 dark:via-gray-950 dark:to-black border-t border-gray-200 dark:border-gray-800 mt-10">
+      
+      <div className="max-w-7xl mx-auto px-6 py-10 grid grid-cols-1 md:grid-cols-3 gap-8">
+
+        {/* 🔹 Brand Section */}
+        <div>
+          <div className="flex items-center gap-2 mb-3">
+            <Hospital className="w-6 h-6 text-sky-600" />
+            <span className="text-xl font-bold text-sky-700 dark:text-sky-400">
+              Prescripto
+            </span>
+          </div>
+          <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">
+            Your digital healthcare partner connecting patients, doctors, and labs 
+            for seamless appointments, reports, and prescriptions.
+          </p>
+        </div>
+
+        {/* 🔹 Quick Links */}
+        <div>
+  <h3 className="font-semibold text-gray-800 dark:text-gray-200 mb-3">
+    Quick Links
+  </h3>
+
+  <ul className="space-y-2 text-sm">
+    <li>
+      <Link
+  to="/"
+  onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+>
+  Home
+</Link>
+    </li>
+
+    <li>
+      <Link
+        to="/login"
+        className="hover:text-sky-600 transition-colors duration-200"
+      >
+        Book Appointment
+      </Link>
+    </li>
+
+    <li>
+      <Link
+        to="/register"
+        className="hover:text-sky-600 transition-colors duration-200"
+      >
+        Register
+      </Link>
+    </li>
+  </ul>
+</div>
+
+        {/* 🔹 Contact Info */}
+        <div>
+          <h3 className="font-semibold text-gray-800 dark:text-gray-200 mb-3">
+            Contact Us
+          </h3>
+          <ul className="space-y-2 text-sm text-gray-600 dark:text-gray-400">
+            <li className="flex items-center gap-2">
+              <Mail className="w-4 h-4" /> rehanpathan6054@gmail.com
+            </li>
+            <li className="flex items-center gap-2">
+              <Phone className="w-4 h-4" /> +91 8459965511
+            </li>
+            <li className="flex items-center gap-2">
+              <MapPin className="w-4 h-4" /> India
+            </li>
+          </ul>
+        </div>
+
+      </div>
+
+      {/* 🔻 Bottom Bar */}
+      <div className="border-t border-gray-200 dark:border-gray-800 py-4 text-center text-sm text-gray-500 dark:text-gray-400">
         © {new Date().getFullYear()} <b>Prescripto</b>. All rights reserved.
-      </footer>
+      </div>
+    </footer>
+  );
+
     </>
   );
 }

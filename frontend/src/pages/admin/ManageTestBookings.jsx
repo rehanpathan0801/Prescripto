@@ -207,10 +207,7 @@ export default function ManageTestBookings() {
                   <td className="px-4 py-3">
                     {b.reportFile ? (
                       <a
-                        href={`${import.meta.env.VITE_API_URL.replace(
-                          "/api",
-                          ""
-                        )}${b.reportFile}`}
+                        href={b.reportFile}
                         target="_blank"
                         rel="noreferrer"
                         className="text-blue-600 hover:underline"

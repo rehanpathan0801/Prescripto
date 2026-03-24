@@ -20,6 +20,8 @@ import Navbar from './components/Navbar';
 import { ToastProvider } from './contexts/ToastContext';
 import Toast from './components/Toast';
 import Landing from './pages/Landing';
+import ScrollToTop from "./components/ScrollToTop";
+import ScrollToTopButton from "./components/ScrollToTopButton";
 import { ThemeProvider } from './contexts/ThemeContext';
 
 function AppRoutes() {
@@ -49,6 +51,8 @@ function AppRoutes() {
 
         <Route path="*" element={<Landing />} />
       </Routes>
+       <ScrollToTop />
+       <ScrollToTopButton />
     </>
   );
 }
